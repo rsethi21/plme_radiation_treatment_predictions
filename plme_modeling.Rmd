@@ -1,0 +1,45 @@
+---
+title: "PLME_modeling"
+author: "Rohan Sethi"
+date: "`r Sys.Date()`"
+output: html_document
+---
+```{r}
+# import necessary libraries
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+# read in dataframe
+dataframe = read.csv("data.csv")
+```
+
+```{r}
+# remove unecessary columns by name
+unneeded_cols = c("X", "u1", "u2", "u3", "u4")
+dataframe = select(dataframe, -all_of(unneeded_cols))
+```
+
+```{r}
+# split dataset into a train and test set
+set.seed(2024)
+test_dataframe = slice_sample(dataframe, prop=0.2)
+train_dataframe = dataframe[-as.numeric(rownames(test_dataframe)),]
+```
+
+```{r}
+# create model and review its statistical significance
+trial_model = lm(plme ~ dose_quantity + particle_type, data=train_dataframe)
+summary(trial_model)
+```
+
+```{r}
+plot(trial_model, 1)
+plot(trial_model, 2)
+```
+
+```{r}
+ggplot(data = train_dataframe, mapping = aes(x = dose_quantity, y = plme)) + geom_point()
+```
+
