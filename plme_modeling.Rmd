@@ -12,7 +12,7 @@ library(ggplot2)
 
 ```{r}
 # read in dataframe
-dataframe = read.csv("data.csv")
+dataframe = read.csv("data/data.csv")
 ```
 
 ```{r}
